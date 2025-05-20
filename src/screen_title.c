@@ -25,12 +25,29 @@
 
 #include "raylib.h"
 #include "screens.h"
+#include "gui_elements.h"
 
 //----------------------------------------------------------------------------------
 // Module Variables Definition (local)
 //----------------------------------------------------------------------------------
 static int framesCounter = 0;
 static int finishScreen = 0;
+
+// typedef struct {
+//    int buttonX;
+//    int buttonY;
+//    char* buttonText;
+//    float fontSize;
+// } button;
+//
+// void DrawButton(button b){
+//     Color fillingRectangle = {255, 255, 255, 50};
+//     int lengthOfText = MeasureText(b.buttonText, font.baseSize*b.fontSize);
+//     Vector2 posOfButton = { b.buttonX, b.buttonY };
+//     Vector2 posOfText = { b.buttonX + 30, b.buttonY + 10 };
+//     DrawRectangle(b.buttonX, b.buttonY, lengthOfText+30, 50, fillingRectangle);
+//     DrawTextEx(font, b.buttonText, posOfText, font.baseSize*b.fontSize, 4, WHITE); // 230, 85
+// };
 
 //----------------------------------------------------------------------------------
 // Title Screen Functions Definition
@@ -62,10 +79,17 @@ void UpdateTitleScreen(void)
 void DrawTitleScreen(void)
 {
     // TODO: Draw TITLE screen here!
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), GREEN);
-    Vector2 pos = { 20, 10 };
-    DrawTextEx(font, "TITLE SCREEN", pos, font.baseSize*3.0f, 4, DARKGREEN);
-    DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+    Vector2 posOfGameName = { 290, 85 };
+    Vector2 posOfPlayHitbox = { 560, 525 };
+    Vector2 posOfOptionsHitbox = { 560, 585 };
+    DrawTextEx(font, "myPong (exactly what it sounds like)", posOfGameName, font.baseSize*4.0f, 4, WHITE); // 230, 85
+    button option0 = { 530, 460, "PLAY", 2};
+    button option1 = { 530, 520, "OPTIONS", 2};
+    DrawButton(option0); 
+    DrawButton(option1); 
+    // DrawTextEx(font, "PLAY", posOfPlayHitbox, font.baseSize*2.0f, 4, WHITE); // 230, 85
+    // DrawTextEx(font, "OPTIONS", posOfOptionsHitbox, font.baseSize*2.0f, 4, WHITE); // 230, 85
 }
 
 // Title Screen Unload logic

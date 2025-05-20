@@ -1,0 +1,39 @@
+Today TO-DO?
+- [x] Settle down on one resolution for now?
+- [x] Setup the title screen
+    - [x] The idea is to bind the rectangle and text together. How do we do that?
+    Let's use some maths
+        - [x]  Ofcourse, the same maths as discussed is involved.
+        - [x]  Also, if we want to show movement of the selection box, I should be able to move the selection box
+        - [x]  then we'll need an arrow or something on the left of Text+Box to showcase which is selected along with selection box to make it look nice.
+        - [x]  maybe just increase the size of the border of the selection box.
+        - [x]  im thinking of binding it all together into one simple struct, that just takes in 
+            * the text
+            * the (x,y) coordinates of the overall struct(depicted by outer box)
+            * k
+- [x] Setup the Options screen, but it will not work initially, but still setup bunch of flags
+- [ ] Make it work, basically allowing you to transition into various screens
+- [ ] Back button? Maybe map it to 'P'
+    - [ ] make it work for options screen
+- [ ] Define different options using hitbox
+- [ ] Make the hitbox clickable? also a cursor to denote what is the current selected hitbox?
+- [ ] Maybe add some sounds too? selection sounds or something? 
+    - [ ] Movement of cursor sounds
+    - [ ] Selection of cursor sounds
+- [ ] Add a better font
+- [ ] Results of winning to be displayed as a part of the gameplay screen hi for now
+- [ ] Maybe add a background snowing or space animation?
+
+
+
+
+
+
+-> first todo is to think how many number of screens are required.
+    - Title screen
+    - single Player vs Multiplayer screen (optional/later)
+    - Options screen
+    - Gameplay screen
+-> we need to think of the AI that we are going to program into the single player mode
+-> we need to think if we need 2player mode
+-> extending it to work with Windows, Mac and WebAssembly is something we'll figure out later.
