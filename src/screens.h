@@ -62,11 +62,26 @@ void UnloadOptionsScreen(void);
 int FinishOptionsScreen(void);
 
 //----------------------------------------------------------------------------------
+// Gameplay Screen Structs Declaration
+//----------------------------------------------------------------------------------
+typedef struct paddle{
+    int paddleX;
+    int paddleY; 
+} paddle;
+
+typedef struct ball{
+    int ballX;
+    int ballY;
+    int ballVelocityX;
+    int ballVelocityY;
+} ball;
+
+//----------------------------------------------------------------------------------
 // Gameplay Screen Functions Declaration
 //----------------------------------------------------------------------------------
 void InitGameplayScreen(void);
 void UpdateGameplayScreen(void);
-void DrawGameplayScreen(void);
+void DrawGameplayScreen();
 void UnloadGameplayScreen(void);
 int FinishGameplayScreen(void);
 

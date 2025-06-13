@@ -33,6 +33,16 @@
 static int framesCounter = 0;
 static int finishScreen = 0;
 
+//----------------------------------------------------------------------------------
+// All buttons present on in this screen  
+//----------------------------------------------------------------------------------
+enum buttonsOnTitleScreen{
+    PLAY_BUTTON, OPTIONS_BUTTON, BUTTON_COUNT
+};
+button allButtonsArray[BUTTON_COUNT];
+enum buttonsOnTitleScreen currentSelectedButton = PLAY_BUTTON;
+
+
 // typedef struct {
 //    int buttonX;
 //    int buttonY;
@@ -57,6 +67,8 @@ static int finishScreen = 0;
 void InitTitleScreen(void)
 {
     // TODO: Initialize TITLE screen variables here!
+    allButtonsArray[PLAY_BUTTON] = (button){0, 0, "PLAY", 0}; 
+    allButtonsArray[OPTIONS_BUTTON] = (button){0, 0, "OPTIONS", 0};
     framesCounter = 0;
     finishScreen = 0;
 }
@@ -64,15 +76,44 @@ void InitTitleScreen(void)
 // Title Screen Update logic
 void UpdateTitleScreen(void)
 {
+    if (IsKeyPressed(KEY_DOWN)) currentSelectedButton = (currentSelectedButton + 1) % BUTTON_COUNT;
+    if (IsKeyPressed(KEY_UP)) currentSelectedButton = (currentSelectedButton - 1 + BUTTON_COUNT) % BUTTON_COUNT;
+
+    if(IsKeyPressed(KEY_ENTER)){
+        if(currentSelectedButton == PLAY_BUTTON) {
+            finishScreen = 2;
+            PlaySound(fxCoin);
+        } 
+        else if (currentSelectedButton == OPTIONS_BUTTON) {
+            finishScreen = 1;
+            PlaySound(fxCoin);
+        }
+    }
+
+    for(int i = 0; i <  BUTTON_COUNT; i++){
+        if(IsButtonHovered(allButtonsArray[i])){
+            currentSelectedButton = i;
+        }
+        if(IsButtonClicked(allButtonsArray[i])){
+            if(i == PLAY_BUTTON){
+                finishScreen = 2;
+                PlaySound(fxCoin);
+            }
+            else if (i == OPTIONS_BUTTON) {
+                finishScreen = 1;
+                PlaySound(fxCoin); 
+            }
+        }
+    }
     // TODO: Update TITLE screen variables here!
 
     // Press enter or tap to change to GAMEPLAY screen
-    if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
-    {
-        //finishScreen = 1;   // OPTIONS
-        finishScreen = 2;   // GAMEPLAY
-        PlaySound(fxCoin);
-    }
+    // if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+    // {
+    //     //finishScreen = 1;   // OPTIONS
+    //     finishScreen = 2;   // GAMEPLAY
+    //     PlaySound(fxCoin);
+    // }
 }
 
 // Title Screen Draw logic
@@ -80,14 +121,21 @@ void DrawTitleScreen(void)
 {
     // TODO: Draw TITLE screen here!
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+
     Vector2 posOfGameName = { 290, 85 };
-    Vector2 posOfPlayHitbox = { 560, 525 };
-    Vector2 posOfOptionsHitbox = { 560, 585 };
-    DrawTextEx(font, "myPong (exactly what it sounds like)", posOfGameName, font.baseSize*4.0f, 4, WHITE); // 230, 85
-    button option0 = { 530, 460, "PLAY", 2};
-    button option1 = { 530, 520, "OPTIONS", 2};
-    DrawButton(option0); 
-    DrawButton(option1); 
+    DrawTextEx(font, "rayPong (exactly what it sounds like)", posOfGameName, font.baseSize*4.0f, 4, WHITE); // 230, 85
+    // Vector2 posOfPlayHitbox = { 560, 525 };
+    // Vector2 posOfOptionsHitbox = { 560, 585 };
+    allButtonsArray[PLAY_BUTTON] = (button){ 530, 460, "NOPLAY", 2};
+    allButtonsArray[OPTIONS_BUTTON]= (button){ 530, 520, "OPTIONS", 2};
+    
+    for(int i = 0; i < BUTTON_COUNT; i++){
+        DrawButton(allButtonsArray[i]);
+        if(i == currentSelectedButton || IsButtonHovered(allButtonsArray[i])){
+            Rectangle highlightRect = { 0 };
+            RenderSelectionHighlight(highlightRect, allButtonsArray[i]);
+        }
+    }
     // DrawTextEx(font, "PLAY", posOfPlayHitbox, font.baseSize*2.0f, 4, WHITE); // 230, 85
     // DrawTextEx(font, "OPTIONS", posOfOptionsHitbox, font.baseSize*2.0f, 4, WHITE); // 230, 85
 }

@@ -1,15 +1,15 @@
 /*******************************************************************************************
 *
-*   myPong
+*   rayPong
 *   Implementing Pong in C using raylib for learning.
 *
 *   This game has been created using raylib (www.raylib.com)
 *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
 *
-*   Copyright (c) 2025 Ujjwal Kala (@raysan5)
+*   Copyright (c) 2025 Ujjwal Kala (@ujsquared)
 *
 ********************************************************************************************/
-
+#include<stdio.h>
 #include "raylib.h"
 #include "screens.h"    // NOTE: Declares global (extern) variables and screens functions
 
@@ -66,18 +66,17 @@ int main(void)
     //music = LoadMusicStream("resources/ambient.ogg"); // TODO: Load music
     fxCoin = LoadSound("resources/coin.wav");
 
-    SetMusicVolume(music, 1.0f);
-    PlayMusicStream(music);
 
     // Setup and init first screen
-    currentScreen = OPTIONS;
-    InitOptionsScreen();
+    currentScreen = TITLE;
+    InitTitleScreen();
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
 #else
-    SetTargetFPS(144);       // Set our game to run at 60 frames-per-second
+    SetTargetFPS(144);
     //--------------------------------------------------------------------------------------
+    SetExitKey(KEY_NULL);
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -225,8 +224,8 @@ static void UpdateDrawFrame(void)
             {
                 UpdateTitleScreen();
 
-                if (FinishTitleScreen() == 1) TransitionToScreen(OPTIONS);
-                else if (FinishTitleScreen() == 2) TransitionToScreen(GAMEPLAY);
+                if (FinishTitleScreen() == 1) TransitionToScreen(OPTIONS); // Output of button 1
+                else if (FinishTitleScreen() == 2) TransitionToScreen(GAMEPLAY); // Output of button 2
 
             } break;
             case OPTIONS:
