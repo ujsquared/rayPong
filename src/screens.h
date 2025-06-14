@@ -76,6 +76,11 @@ typedef struct ball{
     int ballVelocityY;
 } ball;
 
+typedef struct score{
+    int leftScore;
+    int rightScore;
+} score;
+
 //----------------------------------------------------------------------------------
 // Gameplay Screen Functions Declaration
 //----------------------------------------------------------------------------------
