@@ -34,13 +34,13 @@ static int framesCounter = 0;
 static int finishScreen = 0;
 
 //----------------------------------------------------------------------------------
-// All buttons present on in this screen  
+// Button related Definition (on this screen)
 //----------------------------------------------------------------------------------
 enum buttonsOnTitleScreen{
     PLAY_BUTTON, OPTIONS_BUTTON, BUTTON_COUNT
 };
-button allButtonsArray[BUTTON_COUNT];
-enum buttonsOnTitleScreen currentSelectedButton = PLAY_BUTTON;
+button titleScreenButtons[BUTTON_COUNT];
+enum buttonsOnTitleScreen titleSelectedButton = PLAY_BUTTON;
 
 
 // typedef struct {
@@ -67,8 +67,8 @@ enum buttonsOnTitleScreen currentSelectedButton = PLAY_BUTTON;
 void InitTitleScreen(void)
 {
     // TODO: Initialize TITLE screen variables here!
-    allButtonsArray[PLAY_BUTTON] = (button){0, 0, "PLAY", 0}; 
-    allButtonsArray[OPTIONS_BUTTON] = (button){0, 0, "OPTIONS", 0};
+    titleScreenButtons[PLAY_BUTTON] = (button){0, 0, "PLAY", 0}; 
+    titleScreenButtons[OPTIONS_BUTTON] = (button){0, 0, "OPTIONS", 0};
     framesCounter = 0;
     finishScreen = 0;
 }
@@ -76,25 +76,25 @@ void InitTitleScreen(void)
 // Title Screen Update logic
 void UpdateTitleScreen(void)
 {
-    if (IsKeyPressed(KEY_DOWN)) currentSelectedButton = (currentSelectedButton + 1) % BUTTON_COUNT;
-    if (IsKeyPressed(KEY_UP)) currentSelectedButton = (currentSelectedButton - 1 + BUTTON_COUNT) % BUTTON_COUNT;
+    if (IsKeyPressed(KEY_DOWN)) titleSelectedButton = (titleSelectedButton + 1) % BUTTON_COUNT;
+    if (IsKeyPressed(KEY_UP)) titleSelectedButton = (titleSelectedButton - 1 + BUTTON_COUNT) % BUTTON_COUNT;
 
     if(IsKeyPressed(KEY_ENTER)){
-        if(currentSelectedButton == PLAY_BUTTON) {
+        if(titleSelectedButton == PLAY_BUTTON) {
             finishScreen = 2;
             PlaySound(fxCoin);
         } 
-        else if (currentSelectedButton == OPTIONS_BUTTON) {
+        else if (titleSelectedButton == OPTIONS_BUTTON) {
             finishScreen = 1;
             PlaySound(fxCoin);
         }
     }
 
     for(int i = 0; i <  BUTTON_COUNT; i++){
-        if(IsButtonHovered(allButtonsArray[i])){
-            currentSelectedButton = i;
+        if(IsButtonHovered(titleScreenButtons[i])){
+            titleSelectedButton = i;
         }
-        if(IsButtonClicked(allButtonsArray[i])){
+        if(IsButtonClicked(titleScreenButtons[i])){
             if(i == PLAY_BUTTON){
                 finishScreen = 2;
                 PlaySound(fxCoin);
@@ -126,14 +126,14 @@ void DrawTitleScreen(void)
     DrawTextEx(font, "rayPong (exactly what it sounds like)", posOfGameName, font.baseSize*4.0f, 4, WHITE); // 230, 85
     // Vector2 posOfPlayHitbox = { 560, 525 };
     // Vector2 posOfOptionsHitbox = { 560, 585 };
-    allButtonsArray[PLAY_BUTTON] = (button){ 530, 460, "NOPLAY", 2};
-    allButtonsArray[OPTIONS_BUTTON]= (button){ 530, 520, "OPTIONS", 2};
+    titleScreenButtons[PLAY_BUTTON] = (button){ 530, 460, "NOPLAY", 2};
+    titleScreenButtons[OPTIONS_BUTTON]= (button){ 530, 520, "OPTIONS", 2};
     
     for(int i = 0; i < BUTTON_COUNT; i++){
-        DrawButton(allButtonsArray[i]);
-        if(i == currentSelectedButton || IsButtonHovered(allButtonsArray[i])){
+        DrawButton(titleScreenButtons[i]);
+        if(i == titleSelectedButton || IsButtonHovered(titleScreenButtons[i])){
             Rectangle highlightRect = { 0 };
-            RenderSelectionHighlight(highlightRect, allButtonsArray[i]);
+            RenderSelectionHighlight(highlightRect, titleScreenButtons[i]);
         }
     }
     // DrawTextEx(font, "PLAY", posOfPlayHitbox, font.baseSize*2.0f, 4, WHITE); // 230, 85

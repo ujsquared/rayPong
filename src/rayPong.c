@@ -95,6 +95,7 @@ int main(void)
         case TITLE: UnloadTitleScreen(); break;
         case OPTIONS: UnloadOptionsScreen(); break;
         case GAMEPLAY: UnloadGameplayScreen(); break;
+        case SELECTION: UnloadSelectionScreen(); break;
         default: break;
     }
 
@@ -124,6 +125,7 @@ static void ChangeToScreen(int screen)
         case TITLE: UnloadTitleScreen(); break;
         case OPTIONS: UnloadOptionsScreen(); break;
         case GAMEPLAY: UnloadGameplayScreen(); break;
+        case SELECTION: UnloadSelectionScreen(); break;
         default: break;
     }
 
@@ -134,6 +136,7 @@ static void ChangeToScreen(int screen)
         case TITLE: InitTitleScreen(); break;
         case OPTIONS: InitOptionsScreen(); break;
         case GAMEPLAY: InitGameplayScreen(); break;
+        case SELECTION: InitSelectionScreen(); break;
         default: break;
     }
 
@@ -170,6 +173,7 @@ static void UpdateTransition(void)
                 case TITLE: UnloadTitleScreen(); break;
                 case OPTIONS: UnloadOptionsScreen(); break;
                 case GAMEPLAY: UnloadGameplayScreen(); break;
+                case SELECTION: UnloadSelectionScreen(); break;
                 default: break;
             }
 
@@ -180,6 +184,7 @@ static void UpdateTransition(void)
                 case TITLE: InitTitleScreen(); break;
                 case OPTIONS: InitOptionsScreen(); break;
                 case GAMEPLAY: InitGameplayScreen(); break;
+                case SELECTION: InitSelectionScreen(); break;
                 default: break;
             }
 
@@ -226,7 +231,7 @@ static void UpdateDrawFrame(void)
                 UpdateTitleScreen();
 
                 if (FinishTitleScreen() == 1) TransitionToScreen(OPTIONS); // Output of button 1
-                else if (FinishTitleScreen() == 2) TransitionToScreen(GAMEPLAY); // Output of button 2
+                else if (FinishTitleScreen() == 2) TransitionToScreen(SELECTION); // Output of button 2
 
             } break;
             case OPTIONS:
@@ -235,6 +240,12 @@ static void UpdateDrawFrame(void)
 
                 if (FinishOptionsScreen()) TransitionToScreen(TITLE);
 
+            } break;
+            case SELECTION:
+            {
+                UpdateSelectionScreen();
+
+                if(FinishSelectionScreen()) TransitionToScreen(GAMEPLAY);
             } break;
             case GAMEPLAY:
             {
@@ -260,6 +271,7 @@ static void UpdateDrawFrame(void)
             case TITLE: DrawTitleScreen(); break;
             case OPTIONS: DrawOptionsScreen(); break;
             case GAMEPLAY: DrawGameplayScreen(); break;
+            case SELECTION: DrawSelectionScreen(); break;
             default: break;
         }
 
