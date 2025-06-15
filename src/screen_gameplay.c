@@ -99,9 +99,9 @@ void resetGameScreen(int winner){
 
 // Gameplay Screen Update logic
 bool IsGameEnded(){
-    return false;
+    return (GameScore.leftScore >= winningScore || GameScore.rightScore >= winningScore);
 }
-void UpdateGameplayScreen(void)
+void UpdateGameplayScreen(int AImode)
 {
     // TODO: Update GAMEPLAY screen variables here!
     BeginDrawing();
@@ -119,7 +119,7 @@ void UpdateGameplayScreen(void)
         userPaused = !userPaused;
     }
     // This is paddle control area.
-    if(!isPaused){
+    if(!isPaused && !IsGameEnded()){
         if(IsKeyDown(KEY_W) && PaddleLeft.paddleY > 5) {
             PaddleLeft.paddleY -= 5; 
             leftPaddle.y -= 5;
@@ -197,6 +197,9 @@ void UpdateGameplayScreen(void)
         GameBall.ballX += GameBall.ballVelocityX;
         GameBall.ballY += GameBall.ballVelocityY;
     }
+    else if(IsGameEnded()){
+        FinishGameplayScreen();
+    }
     else{
         if(!userPaused)countPause++;
     }
@@ -249,5 +252,17 @@ void UnloadGameplayScreen(void)
 // Gameplay Screen should finish?
 int FinishGameplayScreen(void)
 {
+    if(IsGameEnded())
+    {
+        DrawText("Final Score:", GetScreenWidth()/2 - 100, GetScreenHeight()/2 - 50, 20, WHITE);
+        char str[6];
+        snprintf(str, sizeof(str), "%d - %d", GameScore.leftScore, GameScore.rightScore);
+        DrawText(str, GetScreenWidth()/2 - 100, GetScreenHeight()/2 - 10, 20, WHITE);
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            finishScreen = 1; // Return to title screen
+        }
+    }
     return finishScreen;
 }
