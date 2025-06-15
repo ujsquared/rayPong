@@ -34,6 +34,7 @@ Rectangle rightPaddle = {1270, 330, 10, 60};
 int countPause;
 bool isPaused;
 bool userPaused;
+bool AIMode;
 
 score GameScore;
 
@@ -101,7 +102,7 @@ void resetGameScreen(int winner){
 bool IsGameEnded(){
     return (GameScore.leftScore >= winningScore || GameScore.rightScore >= winningScore);
 }
-void UpdateGameplayScreen(int AImode)
+void UpdateGameplayScreen()
 {
     // TODO: Update GAMEPLAY screen variables here!
     BeginDrawing();
@@ -128,14 +129,26 @@ void UpdateGameplayScreen(int AImode)
             PaddleLeft.paddleY += 5; 
             leftPaddle.y += 5;
         }
-
-        if (IsKeyDown(KEY_UP) && PaddleRight.paddleY > 5) {
-            PaddleRight.paddleY -= 5;
-            rightPaddle.y -= 5;
+        if(!AIMode){
+            if (IsKeyDown(KEY_UP) && PaddleRight.paddleY > 5) {
+                PaddleRight.paddleY -= 5;
+                rightPaddle.y -= 5;
+            }
+            if (IsKeyDown(KEY_DOWN) && PaddleRight.paddleY < GetScreenHeight()-60) {
+                PaddleRight.paddleY += 5; 
+                rightPaddle.y += 5;
+            }
         }
-        if (IsKeyDown(KEY_DOWN) && PaddleRight.paddleY < GetScreenHeight()-60) {
-            PaddleRight.paddleY += 5; 
-            rightPaddle.y += 5;
+        else{
+            // Simple AI: Follow the ball's Y direction
+            if(GameBall.ballY < PaddleRight.paddleY && PaddleRight.paddleY > 5 && GameBall.ballVelocityX > 0){
+                PaddleRight.paddleY -= 5;
+                rightPaddle.y -= 5;
+            }
+            else if(GameBall.ballY > PaddleRight.paddleY + 60 && PaddleRight.paddleY < GetScreenHeight() - 60 && GameBall.ballVelocityX > 0){
+                PaddleRight.paddleY += 5;
+                rightPaddle.y += 5;
+            }
         }
 
 
@@ -175,11 +188,13 @@ void UpdateGameplayScreen(int AImode)
         // c) hitting left paddle
         if(CheckCollisionCircleRec((Vector2){GameBall.ballX, GameBall.ballY}, 5, leftPaddle)){
             GameBall.ballVelocityX = -GameBall.ballVelocityX;
+            GameBall.ballVelocityY -= 5*0.2;
         }
 
         // d) hitting right paddle
         if(CheckCollisionCircleRec((Vector2){GameBall.ballX, GameBall.ballY}, 5, rightPaddle)){
             GameBall.ballVelocityX = -GameBall.ballVelocityX;
+            GameBall.ballVelocityY -= 5*0.2;
         }
 
         if(GameBall.ballX > GetScreenWidth()){

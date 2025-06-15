@@ -37,10 +37,12 @@ void UpdateSelectionScreen(void){
 
     if(IsKeyPressed(KEY_ENTER)){
         if(selectionSelectedButton == VSHUMAN_BUTTON) {
+            AIMode = false;
             finishScreen = 2;
             PlaySound(fxCoin);
         } 
         else if (selectionSelectedButton == VSAI_BUTTON) {
+            AIMode = true;
             finishScreen = 1;
             PlaySound(fxCoin);
         }
